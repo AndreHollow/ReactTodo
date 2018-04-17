@@ -1,0 +1,90 @@
+body{
+  background-color: bisque;
+}
+.field{
+  display: flex;
+  margin-top: 20px
+  width: 30%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.task{
+  display: flex;
+  border: 2px solid black;
+  padding: 10px;
+  width: 25%;
+  margin: 15px 37% 10px 37%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Comic Sans MS";
+}
+.text{
+  flex: 1 1 100%;
+}
+.textarea{
+  flex: 1 1 100%;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Comic Sans MS";
+}
+button.btn{
+  margin: 0px 10px;
+  padding: 10px 12.5%;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Comic Sans MS";
+  cursor: pointer;
+}
+
+.btn.light {
+  background-color: #4eafc9;
+  border: 2px solid #2a89a2;
+}
+
+.btn.red {
+  background-color: #dda66d;
+  border: 2px solid #b6821a;
+}
+
+.btn.blue {
+  background-color: cornflowerblue;
+  border: 2px solid royalblue;
+}
+
+.add{
+  width: 15%;
+  padding: 10px 2.5%;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Comic Sans MS";
+  cursor: pointer;
+  background-color: #4eafc9;
+  border: 2px solid #2a89a2;
+}
+
+.add:hover {
+  background-color: #2a89a2;
+  border-color: #1d6f85;
+}
+
+.btn.light:hover {
+  background-color: #2a89a2;
+  border-color: #1d6f85;
+}
+
+.btn.red:hover {
+  background-color: #b6821a;
+  border-color: #946912;
+}
+
+.btn.blue:hover {
+  background-color: royalblue;
+  border-color: blue;
+}
