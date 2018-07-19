@@ -1,2 +1,2 @@
 # ReactTodo
-ReactJS ToDo 
+Classic todo list made by reactJS
