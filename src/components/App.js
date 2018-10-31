@@ -23,6 +23,59 @@ class App extends Component {
           'title': 'Do my todo list for today',
           'completed': false,
           'editing': false,
+        },
+        {
+          'id': 1,
+          'title': 'Finish totododo list app',
+          'completed': false,
+          'editing': false,
+        },
+        {
+          'id': 1,
+          'title': 'Do my todo list for today',
+          'completed': false,
+          'editing': false,
+        },
+        {
+          'id': 1,
+          'title': 'Finish todo list app app app',
+          'completed': false,
+          'editing': false,
+        },{
+          'id': 1,
+          'title': 'Finish',
+          'completed': false,
+          'editing': false,
+        },
+        {
+          'id': 1,
+          'title': 'Do my todo list for today',
+          'completed': false,
+          'editing': false,
+        },
+        {
+          'id': 1,
+          'title': 'Finish todo list app',
+          'completed': false,
+          'editing': false,
+        },
+        {
+          'id': 1,
+          'title': 'Do my todo list for today',
+          'completed': false,
+          'editing': false,
+        },
+        {
+          'id': 1,
+          'title': 'Finish tododo list app',
+          'completed': false,
+          'editing': false,
+        },
+        {
+          'id': 1,
+          'title': 'Do my todo list for todayday',
+          'completed': false,
+          'editing': false,
         }
       ],
     };
@@ -48,21 +101,38 @@ class App extends Component {
         </header>
       
         <section className = 'Todo-container'>
-           
-        </section>
+          <ul className = 'Todo-list'>
+            {this.state.todos.map(item => (
+              <li className = 'Todo-item' key={item.id}><input type="checkbox" /><p className = 'Todo-text'>{item.title}</p><div className="remove-item">&times;</div></li>
+            ))}
       
+          </ul>
+        </section>
+        
+        <section className = 'UpperFooter'>
+          <div className = 'UpperFooter-remaining'>
+            1408 rooms remaining
+          </div>
+          <div className = 'UpperFooter-filter'>
+            <button>All</button>
+            <button>Active</button>
+            <button>Completed</button>
+          </div>
+        </section>
+
         <footer className = 'App-footer'>
           <div className = 'App-field'>
             <input type = 'text' className = 'todo-input' placeholder = 'What needs to be done'/>
+          </div>
+          <div className = 'Footer-buttons'>
+            <button>Check all</button>
+            <button>Complete</button>
+            <button>Clear Complited</button>
           </div>
         </footer>
       </div>
     );
   }
 }
-//          <ul>
-//            {this.props.todos.map(item => (
-//              <li key={item.id}>{item.title}</li>
-//            ))}
-//          </ul>
+
 export default App;
