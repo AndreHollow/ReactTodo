@@ -12,41 +12,45 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      idForTodo: 6,
+      idForTodo: 5,
+      idForCompleted: 0,
+      idForActive: 3,
+      filter: 'Active',
       todos: [
         {
-          'id': 1,
+          'id': 0,
           'title': 'Finish todo list app',
           'completed': false,
           'editing': false,
         },
         {
-          'id': 2,
+          'id': 1,
           'title': 'Do my todo list for today',
           'completed': false,
           'editing': false,
         },
         {
-          'id': 3,
+          'id': 2,
           'title': 'Finish totododo list app',
           'completed': false,
           'editing': false,
         },
         {
-          'id': 4,
+          'id': 3,
           'title': 'Do my todo list for today',
+          'completed': true,
+          'editing': false,
+        },
+        {
+          'id': 4,
+          'title': 'Finish todo list app app app',
           'completed': false,
           'editing': false,
         },
         {
           'id': 5,
-          'title': 'Finish todo list app app app',
-          'completed': false,
-          'editing': false,
-        },{
-          'id': 6,
           'title': 'Finish',
-          'completed': false,
+          'completed': true,
           'editing': false,
         },
       ],
@@ -54,7 +58,7 @@ class App extends Component {
   }
   todoInput = React.createRef();
   
-  addTodo = event =>{
+  addTodo = (event) =>{
     if(event.key === 'Enter')
     {
       const todoInput = this.todoInput.current.value;
@@ -69,8 +73,7 @@ class App extends Component {
         todos.push({
           id: idForTodo,
           title: todoInput,
-          completed: false,
-          editiong: false
+          completed: false
         })
         this.todoInput.current.value = '';
         return {idForTodo, todos};
@@ -79,22 +82,49 @@ class App extends Component {
   }
   
   removeTodo = (index) =>{
-    const removedTodo = this.state.todos[index - 1];
-    console.log(removedTodo);
+    const removedTodo = this.state.todos[index];
     this.setState((prevState, props) =>{
       let todos = prevState.todos;
       let idForTodo = prevState.idForTodo - 1;
       
-      todos.splice(index - 1, 1);
-      todos.forEach((i) => {if(i.id > index - 1) i.id--; });
+      todos.splice(index, 1);
+      todos.forEach((i) => {if(i.id > index) i.id--; });
       return {idForTodo, todos};
     });
     
   }
   
+  filterAll = () => {
+    this.setState((prevState, props) => {
+      let filter = prevState.filter;
+      filter = 'All';
+      return {filter};
+    });
+  }  
   
+  filterActive = () => {
+    this.setState((prevState, props) => {
+      let filter = prevState.filter;
+      filter = 'Active';
+      return {filter};
+    });
+  }  
   
+  filterCompleted = () => {
+    this.setState((prevState, props) => {
+      let filter = prevState.filter;
+      filter = 'Completed';
+      return {filter};
+    });
+  }
   
+  check = (index) => {
+    this.setState((prevState, props) => {
+      let todos = prevState.todos;
+      todos.forEach((i) => {if(i.id === index) i.completed = !i.completed;});
+      return {todos};
+    });
+  }
   
   
   
@@ -120,25 +150,48 @@ class App extends Component {
       
         <section className = 'Todo-container'>
           <ul className = 'Todo-list'>
-            {this.state.todos.map(item => (
-              <li className = 'Todo-item' key={item.id}>
-                <input type="checkbox" />
-                <p className = 'Todo-text'>{item.title}</p>
-                <div className="remove-item" onClick = {(event) => this.removeTodo(item.id)}>&times;</div>
-              </li>
-            ))}
+            { this.state.filter === 'All' ?
+                this.state.todos.map(item => (
+                  <li className = 'Todo-item' key={item.id}>
+                    <input type="checkbox" className = 'checkbox' onClick = {() => this.check(item.id)} />
+                    {item.completed ? document.getElementsByClassName('checkbox').checked = true : document.getElementsByClassName('checkbox').checked = false}
+                    <p className = {item.comleted ? 'Todo-text-crossed' : 'Todo-text'}>{item.title}</p>
+                    <div className="remove-item" onClick = {(event) => this.removeTodo(item.id)}>&times;</div>
+                  </li>
+                ))
+              : 
+              this.state.filter === 'Active' ?
+                this.state.todos.map(item => {
+                  if(!item.completed){
+                  return <li className = 'Todo-item' key={item.id}>
+                    <input type="checkbox" className = 'Uncompleted-box' onClick = {() => this.check(item.id)} />
+                    <p className = {item.comleted ? 'Todo-text-crossed' : 'Todo-text'}>{item.title}</p>
+                    <div className="remove-item" onClick = {(event) => this.removeTodo(item.id)}>&times;</div>
+                  </li>
+              }})
+              :
+              //this.state.filter === 'Completed'
+              this.state.todos.map(item => {
+                if(item.completed){
+                  return <li className = 'Todo-item' key={item.id}>
+                    <input type="checkbox" className = 'Completed-box' checked onClick = {() => this.check(item.id)} />
+                    <p className = 'Todo-text'>{item.title}</p>
+                    <div className="remove-item" onClick = {(event) => this.removeTodo(item.id)}>&times;</div>
+                  </li>
+              }})
+            }
       
           </ul>
         </section>
         
         <section className = 'UpperFooter'>
           <div className = 'UpperFooter-remaining'>
-            1408 rooms remaining
+            {this.state.idForActive + 1} tasks remaining
           </div>
           <div className = 'UpperFooter-filter'>
-            <button>All</button>
-            <button>Active</button>
-            <button>Completed</button>
+            <button onClick = {this.filterAll}>All</button>
+            <button onClick = {this.filterActive}>Active</button>
+            <button onClick = {this.filterCompleted}>Completed</button>
           </div>
         </section>
 
