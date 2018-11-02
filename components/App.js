@@ -13,43 +13,43 @@ class App extends Component {
     super(props);
     this.state = { 
       idForTodo: 5,
-      idForCompleted: 0,
-      idForActive: 3,
+      idForCompleted: 2,
+      idForActive: 4,
       filter: 'Active',
       todos: [
         {
           'id': 0,
-          'title': 'Finish todo list app',
+          'title': 'Finish todo list app1',
           'completed': false,
           'editing': false,
         },
         {
           'id': 1,
-          'title': 'Do my todo list for today',
+          'title': 'Do my todo list for today2',
           'completed': false,
           'editing': false,
         },
         {
           'id': 2,
-          'title': 'Finish totododo list app',
+          'title': 'Finish totododo list app3',
           'completed': false,
           'editing': false,
         },
         {
           'id': 3,
-          'title': 'Do my todo list for today',
+          'title': 'Do my todo list for today4',
           'completed': true,
           'editing': false,
         },
         {
           'id': 4,
-          'title': 'Finish todo list app app app',
+          'title': 'Finish todo list app app app5',
           'completed': false,
           'editing': false,
         },
         {
           'id': 5,
-          'title': 'Finish',
+          'title': 'Finish6',
           'completed': true,
           'editing': false,
         },
@@ -70,19 +70,19 @@ class App extends Component {
       this.setState((prevState, props) => {
         let todos = prevState.todos;
         let idForTodo = prevState.idForTodo + 1;
+        let idForActive = prevState.idForActive + 1;
         todos.push({
           id: idForTodo,
           title: todoInput,
           completed: false
         })
         this.todoInput.current.value = '';
-        return {idForTodo, todos};
+        return {idForTodo, idForActive, todos};
       });
     }
   }
   
   removeTodo = (index) =>{
-    const removedTodo = this.state.todos[index];
     this.setState((prevState, props) =>{
       let todos = prevState.todos;
       let idForTodo = prevState.idForTodo - 1;
@@ -121,11 +121,60 @@ class App extends Component {
   check = (index) => {
     this.setState((prevState, props) => {
       let todos = prevState.todos;
+      let idForActive = prevState.idForActive;
+      let idForCompleted = prevState.idForCompleted;
       todos.forEach((i) => {if(i.id === index) i.completed = !i.completed;});
-      return {todos};
+      if(todos[index].completed === true){
+        idForActive -= 1;
+        idForCompleted += 1;
+        return {todos, idForActive, idForCompleted};
+      }
+      else { 
+        idForActive += 1;
+        idForCompleted -=1;
+        return {todos, idForActive, idForCompleted};
+      }
     });
   }
   
+  isChecked = (index) => {
+    if(this.state.todos[index].completed) return true;
+    else return false;
+  }
+  
+  checkAll = () => {
+    this.setState((prevState, props) =>{
+      let todos = prevState.todos;
+      let idForActive = 0;
+      let idForCompleted = prevState.idForTodo + 1;
+      
+      todos.forEach((i) => {i.completed = true});
+      
+      return {todos, idForActive, idForCompleted};
+    })
+  }
+  
+  clearCompleted = () => { //bugged Удаляет элементы через 1
+    this.setState((prevState, props) =>{
+      let todos = prevState.todos;
+      let idForCompleted = 0;
+      let idForTodo = prevState.idForTodo;
+      let deleted;
+      todos.forEach((i) => {
+        if(i.completed){
+          deleted = i.id;
+          idForTodo -= 1;  
+          todos.forEach((j) => {
+            if(j.id > deleted) {
+              j.id--;
+            }
+          });
+          todos.splice(i.id, 1);
+        }
+      });
+      return {todos, idForTodo, idForCompleted};
+    })
+  }
   
   
   render() {
@@ -153,9 +202,8 @@ class App extends Component {
             { this.state.filter === 'All' ?
                 this.state.todos.map(item => (
                   <li className = 'Todo-item' key={item.id}>
-                    <input type="checkbox" className = 'checkbox' onClick = {() => this.check(item.id)} />
-                    {item.completed ? document.getElementsByClassName('checkbox').checked = true : document.getElementsByClassName('checkbox').checked = false}
-                    <p className = {item.comleted ? 'Todo-text-crossed' : 'Todo-text'}>{item.title}</p>
+                    <input id = {item.id} type="checkbox" className = 'checkbox' onClick = {() => this.check(item.id)} checked = {this.isChecked(item.id)} />
+                    <p className = {item.completed ? 'Todo-text-crossed' : 'Todo-text'}>{item.title}</p>
                     <div className="remove-item" onClick = {(event) => this.removeTodo(item.id)}>&times;</div>
                   </li>
                 ))
@@ -186,7 +234,7 @@ class App extends Component {
         
         <section className = 'UpperFooter'>
           <div className = 'UpperFooter-remaining'>
-            {this.state.idForActive + 1} tasks remaining
+            {this.state.idForActive} tasks remaining
           </div>
           <div className = 'UpperFooter-filter'>
             <button onClick = {this.filterAll}>All</button>
@@ -200,9 +248,8 @@ class App extends Component {
             <input type = 'text' className = 'todo-input' placeholder = 'What needs to be done' ref ={this.todoInput} onKeyUp = {this.addTodo}/>
           </div>
           <div className = 'Footer-buttons'>
-            <button>Check all</button>
-            <button>Complete</button>
-            <button>Clear Complited</button>
+            <button onClick = {() => this.checkAll()}>Check all</button>
+            <button onClick = {() => this.clearCompleted()}>Clear Complited</button>
           </div>
         </footer>
       </div>
