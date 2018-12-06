@@ -1,2 +1,5 @@
-# ReactTodo(in process)
-Classic todo list made by reactJS
+# ReactTodo
+Classic todo list made by React JS
+
+Check it: https://andrehollow.github.io/ReactTodo/
+
